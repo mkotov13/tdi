@@ -1,0 +1,13 @@
+{% extends "base.html"%}
+{% block content %}
+<h1> Checking your answer</h1>
+<div><p>{{ q.body }}</p></div>
+<div>you said: {{ a.answer }}<br>right answer is: {{q.right_answer}}</div>
+{% if a.answer == q.right_answer %}
+<div style="color:green;"><b>CORRECT</b></div>
+{% else %}
+<div style="color:red;"><b>INCORRECT</b></div>
+{% endif %}
+<h3><i>Explanation</i></h3>
+<div>{{ q.feedback }}</div>
+{% endblock %}

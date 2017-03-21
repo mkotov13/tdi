@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
 from app import app, db, lm, oid
 from .forms import LoginForm, QuestionForm, AnswerForm
-from .models import User, Question
+from .models import User, Question, Answer
 
 
 @lm.user_loader
@@ -27,6 +28,7 @@ def index():
         flash('Your question has been added')
         return redirect(url_for('index'))
     questions = Question.query.all()
+    # mock questions
     quesns = [
         {
             'author': { 'nickname': 'Michael L.'},
@@ -43,17 +45,30 @@ def index():
                             form=form,
                             questions=questions)
 
-@app.route('/question/<id>')
+@app.route('/question/<id>', methods=['GET', 'POST'])
 @login_required
 def question(id):
+    user = g.user
     question = Question.query.filter_by(id=id).first()
-    form = AnswerForm()
     if question == None:
         flash('Question #%s not found.' % id)
         return redirect(url_for('index'))
+    form = AnswerForm()
+    if form.validate_on_submit():
+        answer = Answer(answeredby=user, question=question, answer=form.answer.data, timestamp=datetime.utcnow())
+        db.session.add(answer)
+        db.session.commit()
+        flash('Your answer has been submitted')
+        return render_template('feedback.html',
+                               title='checking',
+                               q=question,
+                               a=answer,
+                               user=user)
     return render_template('question.html',
+                           title='Submit an Answer',
                            q=question,
-                           form=form)
+                           form=form,
+                           user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
@@ -95,6 +110,12 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# testing routes
 @app.route('/testing')
 def testing():
     return "Are we here?"
+
+# error handlers
+@app.errorhandler(401)
+def not_authorized_error(error):
+    return render_template('401.html'), 401
