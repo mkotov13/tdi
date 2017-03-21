@@ -89,6 +89,10 @@ If for some reason you are getting the 401 Unauthorized error, please navigate t
 
 Current implementation only supports login via OpenID. The simplest way to obtain an OpenID is by signing up for Yahoo mail (at this point in time, Yahoo is one of the few big websites that supports OpenID).
 
+## Adding questions
+
+Any user is able to add questions. To do so, please navigate to the home page and submit your question via the form.
+
 # Extending current framework
 
 ## Making edits to the model - Database Migration
