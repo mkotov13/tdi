@@ -1,16 +1,13 @@
 {% extends "base.html"%}
 {% block content %}
   <h1>Hi, {{ user.nickname }}!</h1>
-  {% for q in questions %}
-  <div><p>{{ q.author.nickname }} asks: {{ q.body }}</p></div>
-  {% endfor %}
-  <i>Add a question</i>
+  <h2><i>Add a question</i></h2>
   <form action="" method="post" name="question">
       {{ form.hidden_tag() }}
       <table>
           <tr>
               <td>Question:</td>
-              <td>{{ form.body(size=30, maxlength=140) }}</td>
+              <td>{{ form.body(cols=32, rows=4) }}</td>
               <td>
               {% for error in form.body.errors %}
               <span style="color: red;">[{{ error }}]</span><br>
@@ -28,7 +25,7 @@
           </tr>
           <tr>
               <td>Explanation:</td>
-              <td>{{ form.feedback(size=10, maxlength=150) }}</td>
+              <td>{{ form.feedback(cols=32, rows=4) }}</td>
               <td>
               {% for error in form.feedback.errors %}
               <span style="color: red;">[{{ error }}]</span><br>
@@ -42,4 +39,9 @@
           </tr>
       </table>
   </form>
+  <h2><i>Recent questions</i></h2>
+  {% for q in questions %}
+  <div><p>{{ q.author.nickname }} asks: {{ q.body }} <a href='/question/{{ q.id }}'><i>answer it</i></a></p></div>
+  {% endfor %}
+  <br>
 {% endblock %}

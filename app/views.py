@@ -43,6 +43,16 @@ def index():
                             form=form,
                             questions=questions)
 
+@app.route('/question/<id>')
+@login_required
+def question(id):
+    question = Question.query.filter_by(id=id).first()
+    if question == None:
+        flash('Question #%s not found.' % id)
+        return redirect(url_for('index'))
+    return render_template('question.html',
+                           q=question)
+
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
 def login():
