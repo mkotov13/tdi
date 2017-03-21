@@ -1,6 +1,83 @@
+# Grading Web app
+
+This prototype application allows users to submit answers to questions online and receive instant feedback. A few facts:
+ - questions AND answers are stored in a database
+ - feedback is available upon submission
+ - adding new questions is very easy
+
+# Architecture
+
+The app runs on Flask, a framework for creating web applications using Python. I chose Flask because of a few factors: it's simple to install, simple to use (given basic knowledge of Python), and it's exteremely flexible.
+
+The data is stored using SQLite.
+
+# Installation
+
+## Setting up
+
+##### Clone the repo
+
+```
+$ git clone https://github.com/hack4impact/flask-base.git
+$ cd flask-base
+```
+
+##### Initialize a virtualenv
+
+```
+$ pip install virtualenv
+$ python -m virtualenv install
+```
+
+If the commands above do not get the job done, try the following:
+
+```
+$ pip install virtualenv
+$ virtualenv -p /path/to/python3.x/installation env
+$ source env/bin/activate
+```
+
+For mac users it will most likely be
+```
+$ pip install virtualenv
+$ virtualenv -p python3 env
+$ source env/bin/activate
+```
+Note: if you are using a python2.x version, point the -p value towards your python2.x
+
+If you're still not having any luck, please consult the [Flask installation guide](http://flask.pocoo.org/docs/0.12/installation/)
+
+##### (If you're on a mac) Make sure xcode tools are installed
+
+```
+$ xcode-select --install
+```
+
+#### Flask extensions
+
+If you are on Linux, OS X or Cygwin, install flask and extensions by entering the following commands, one after another:
+
+```
+$ flask/bin/pip install flask
+$ flask/bin/pip install flask-login
+$ flask/bin/pip install flask-openid
+$ flask/bin/pip install flask-sqlalchemy
+$ flask/bin/pip install sqlalchemy-migrate
+$ flask/bin/pip install flask-whooshalchemy
+$ flask/bin/pip install flask-wtf
+```
+
+These commands will download and install all the packages that will be used by this application.
+
 to create a new database, run the `db_create.py` script, then use `db_upgrade.py` to upgrade the database to the latest version
 
 # Interacting with the app
+
+To boot the app, run the following on the command line:
+
+```
+python run.py
+```
 
 ## Beginning
 
