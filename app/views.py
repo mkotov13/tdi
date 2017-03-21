@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
-from .forms import LoginForm, QuestionForm
+from .forms import LoginForm, QuestionForm, AnswerForm
 from .models import User, Question
 
 
@@ -47,11 +47,13 @@ def index():
 @login_required
 def question(id):
     question = Question.query.filter_by(id=id).first()
+    form = AnswerForm()
     if question == None:
         flash('Question #%s not found.' % id)
         return redirect(url_for('index'))
     return render_template('question.html',
-                           q=question)
+                           q=question,
+                           form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler

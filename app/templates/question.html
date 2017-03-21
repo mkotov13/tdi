@@ -1,4 +1,24 @@
 {% extends "base.html"%}
 {% block content %}
-<div><p>{{ q.author.nickname }} asks: {{ q.body }} <i>answer it {{ q.id }}</i></p></div>
+<h1> Question #{{q.id}}</h1>
+<div><p>{{ q.author.nickname }} asks: {{ q.body }}</p></div>
+<form action="" method="post" name="question">
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>Your answer:</td>
+            <td>{{ form.answer(size=10, maxlength=50) }}</td>
+            <td>
+            {% for error in form.answer.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Submit"></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
 {% endblock %}

@@ -10,3 +10,6 @@ class QuestionForm(Form):
     body = TextAreaField('body', validators=[DataRequired()])
     right_answer = StringField('right_answer', validators=[DataRequired()])
     feedback = TextAreaField('feedback', validators=[DataRequired()])
+
+class AnswerForm(Form):
+    answer = StringField('answer', validators=[DataRequired()])
