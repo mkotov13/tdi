@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
-from .forms import LoginForm
-from .models import User
+from .forms import LoginForm, QuestionForm
+from .models import User, Question
 
 
 @lm.user_loader
@@ -14,12 +14,20 @@ def load_user(id):
 def before_request():
     g.user = current_user
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     user = g.user
-    questions = [
+    form = QuestionForm()
+    if form.validate_on_submit():
+        question = Question(body=form.body.data, right_answer=form.right_answer.data, feedback=form.feedback.data, author=user)
+        db.session.add(question)
+        db.session.commit()
+        flash('Your question has been added')
+        return redirect(url_for('index'))
+    questions = Question.query.all()
+    quesns = [
         {
             'author': { 'nickname': 'Michael L.'},
             'body': 'What"s the circumference of Earth on the equator?'
@@ -32,6 +40,7 @@ def index():
     return render_template('index.html',
                             title='Home',
                             user=user,
+                            form=form,
                             questions=questions)
 
 @app.route('/login', methods=['GET', 'POST'])

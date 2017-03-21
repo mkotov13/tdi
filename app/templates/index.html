@@ -1,7 +1,45 @@
 {% extends "base.html"%}
 {% block content %}
-  <h1>Hi, {{ user.name }}!</h1>
+  <h1>Hi, {{ user.nickname }}!</h1>
   {% for q in questions %}
-  <div><p>{{ q.author.name }} asks: {{ q.body }}</p></div>
+  <div><p>{{ q.author.nickname }} asks: {{ q.body }}</p></div>
   {% endfor %}
+  <i>Add a question</i>
+  <form action="" method="post" name="question">
+      {{ form.hidden_tag() }}
+      <table>
+          <tr>
+              <td>Question:</td>
+              <td>{{ form.body(size=30, maxlength=140) }}</td>
+              <td>
+              {% for error in form.body.errors %}
+              <span style="color: red;">[{{ error }}]</span><br>
+              {% endfor %}
+              </td>
+          </tr>
+          <tr>
+              <td>Right Answer:</td>
+              <td>{{ form.right_answer(size=10, maxlength=50) }}</td>
+              <td>
+              {% for error in form.right_answer.errors %}
+              <span style="color: red;">[{{ error }}]</span><br>
+              {% endfor %}
+              </td>
+          </tr>
+          <tr>
+              <td>Explanation:</td>
+              <td>{{ form.feedback(size=10, maxlength=150) }}</td>
+              <td>
+              {% for error in form.feedback.errors %}
+              <span style="color: red;">[{{ error }}]</span><br>
+              {% endfor %}
+              </td>
+          </tr>
+          <tr>
+              <td></td>
+              <td><input type="submit" value="Add"></td>
+              <td></td>
+          </tr>
+      </table>
+  </form>
 {% endblock %}
